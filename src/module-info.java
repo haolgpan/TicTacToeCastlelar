@@ -3,7 +3,7 @@ module TicTacToeCastlelar {
     requires javafx.fxml;
     requires javafx.controls;
     requires java.prefs;
-    //exports main.tictactoe;
+    exports main.tictactoe;
     opens main.tictactoe.view;
 
 }
