@@ -4,8 +4,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import main.tictactoe.view.GameInterfaceController;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +26,7 @@ public class MainApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Tic Tac Toe");
         initRootLayout();
-        //showPersonOverview();
+        showGameInterface();
     }
     public void initRootLayout() {
          // Load root layout from fxml file.
@@ -46,7 +48,20 @@ public class MainApp extends Application {
          primaryStage.show();
     }
     public void showGameInterface(){
+        try {
+            // Load person overview.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/GameInterface.fxml"));
+            SplitPane gameInterface = loader.load();
 
+            // Set person overview into the center of root layout.
+            rootLayout.setCenter(gameInterface);
+            // Give the controller access to the main app.
+            GameInterfaceController controller = loader.getController();
+            controller.setMainApp(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
