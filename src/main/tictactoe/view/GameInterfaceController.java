@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import main.tictactoe.MainApp;
 
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameInterfaceController implements Initializable {
 
@@ -39,8 +42,17 @@ public class GameInterfaceController implements Initializable {
     private Button start;
     @FXML
     private Text winnerText;
+    @FXML
+    private RadioButton cpuVscpu;
+    @FXML
+    private RadioButton humVscpu;
+    @FXML
+    private RadioButton humVshum;
     private int playerTurn = 0;
+    private int overallTurn = 0;
     private MainApp mainApp;
+    private ToggleGroup radioGroup = new ToggleGroup();
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,15 +62,19 @@ public class GameInterfaceController implements Initializable {
             setupButton(button);
             button.setFocusTraversable(false);
         });
+        cpuVscpu.setToggleGroup(radioGroup);
+        humVscpu.setToggleGroup(radioGroup);
+        humVshum.setToggleGroup(radioGroup);
     }
+
     @FXML
     void restartGame(ActionEvent event) {
         buttons.forEach(this::resetButton);
-        winnerText.setText("Tic-Tac-Toe");
+        winnerText.setText(" ");
     }
     public void resetButton(Button button){
         button.setDisable(false);
-        button.setText("");
+        button.setText(" ");
     }
 
     private void setupButton(Button button) {
@@ -76,7 +92,18 @@ public class GameInterfaceController implements Initializable {
             button.setText("O");
             playerTurn = 0;
         }
+        ++overallTurn;
     }
+    @FXML
+    void cpuGameStyle(ActionEvent actionEvent){
+
+    }
+    private Button cpuMoves() {
+        int randomPos = ThreadLocalRandom.current().nextInt(0,8);
+        Button cpu = buttons.get(randomPos);
+
+    }
+
     public void checkIfGameIsOver(){
         for (int a = 0; a < 8; a++) {
             String line = switch (a) {
@@ -94,11 +121,20 @@ public class GameInterfaceController implements Initializable {
             //X winner
             if (line.equals("XXX")) {
                 winnerText.setText("X won!");
+                buttons.forEach(this::resetButton);
+                overallTurn = 0;
             }
 
             //O winner
             else if (line.equals("OOO")) {
                 winnerText.setText("O won!");
+                buttons.forEach(this::resetButton);
+                overallTurn = 0;
+            }
+            else if (overallTurn == 9) {
+                winnerText.setText("It's a Draw");
+                buttons.forEach(this::resetButton);
+                overallTurn = 0;
             }
         }
     }
