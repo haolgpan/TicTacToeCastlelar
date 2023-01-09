@@ -19,7 +19,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GameInterfaceController implements Initializable {
 
     ArrayList<Button> buttons;
-
     @FXML
     private Button b1;
     @FXML
@@ -57,14 +56,22 @@ public class GameInterfaceController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buttons = new ArrayList<>(Arrays.asList(b1,b2,b3,b4,b5,b6,b7,b8,b9));
-
-        buttons.forEach(button ->{
-            setupButton(button);
-            button.setFocusTraversable(false);
-        });
         cpuVscpu.setToggleGroup(radioGroup);
         humVscpu.setToggleGroup(radioGroup);
         humVshum.setToggleGroup(radioGroup);
+        if (humVscpu.isSelected()){
+            buttons.forEach(button -> {
+                setupButtonCpu(button);
+                button.setFocusTraversable(false);
+            });
+        }
+        else if (humVshum.isSelected()){
+            buttons.forEach(button ->{
+                setupButton(button);
+                button.setFocusTraversable(false);
+            });
+        }
+
     }
 
     @FXML
@@ -94,14 +101,26 @@ public class GameInterfaceController implements Initializable {
         }
         ++overallTurn;
     }
-    @FXML
-    void cpuGameStyle(ActionEvent actionEvent){
-
+    private void setupButtonCpu(Button button) {
+        button.setOnMouseClicked(mouseEvent -> {
+            button.setText("X");
+            button.setDisable(true);
+            cpuMoves();
+            checkIfGameIsOver();
+        });
     }
-    private Button cpuMoves() {
+    public void cpuMoves() {
+        int move = randomMove();
+        Button cpu = buttons.get(move);
+        if (!cpu.isDisabled() && cpu.getText().equals(' ')) cpuMoves();
+        else {
+            buttons.get(move).setText("O");
+            buttons.get(move).setDisable(true);
+        }
+    }
+    public int randomMove(){
         int randomPos = ThreadLocalRandom.current().nextInt(0,8);
-        Button cpu = buttons.get(randomPos);
-
+        return randomPos;
     }
 
     public void checkIfGameIsOver(){
@@ -132,7 +151,7 @@ public class GameInterfaceController implements Initializable {
                 overallTurn = 0;
             }
             else if (overallTurn == 9) {
-                winnerText.setText("It's a Draw");
+                winnerText.setText("It's a draw!");
                 buttons.forEach(this::resetButton);
                 overallTurn = 0;
             }
