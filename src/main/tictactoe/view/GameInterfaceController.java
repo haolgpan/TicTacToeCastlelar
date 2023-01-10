@@ -19,6 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GameInterfaceController implements Initializable {
 
     ArrayList<Button> buttons;
+    ArrayList<Button> aux;
     @FXML
     private Button b1;
     @FXML
@@ -56,32 +57,42 @@ public class GameInterfaceController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buttons = new ArrayList<>(Arrays.asList(b1,b2,b3,b4,b5,b6,b7,b8,b9));
+        aux = buttons;
         cpuVscpu.setToggleGroup(radioGroup);
         humVscpu.setToggleGroup(radioGroup);
         humVshum.setToggleGroup(radioGroup);
-        if (humVscpu.isSelected()){
+        if (!humVscpu.isDisabled()){
+            /*RadioButton rd = (RadioButton) radioGroup.getSelectedToggle();
+            String text = rd.getText();
+            System.out.println(text);*/
             buttons.forEach(button -> {
                 setupButtonCpu(button);
                 button.setFocusTraversable(false);
             });
         }
-        else if (humVshum.isSelected()){
+        else if (!humVshum.isDisabled()){
+            /*RadioButton rd = (RadioButton) radioGroup.getSelectedToggle();
+            String text = rd.getText();
+            System.out.println(text);*/
             buttons.forEach(button ->{
                 setupButton(button);
                 button.setFocusTraversable(false);
             });
         }
+        else if (!cpuVscpu.isDisabled()){
 
+        }
     }
 
     @FXML
     void restartGame(ActionEvent event) {
         buttons.forEach(this::resetButton);
         winnerText.setText(" ");
+        overallTurn = 0;
     }
     public void resetButton(Button button){
         button.setDisable(false);
-        button.setText(" ");
+        button.setText("");
     }
 
     private void setupButton(Button button) {
@@ -90,6 +101,7 @@ public class GameInterfaceController implements Initializable {
             button.setDisable(true);
             checkIfGameIsOver();
         });
+        ++overallTurn;
     }
     public void setPlayerSymbol(Button button){
         if(playerTurn % 2 == 0){
@@ -99,27 +111,35 @@ public class GameInterfaceController implements Initializable {
             button.setText("O");
             playerTurn = 0;
         }
-        ++overallTurn;
     }
     private void setupButtonCpu(Button button) {
         button.setOnMouseClicked(mouseEvent -> {
             button.setText("X");
             button.setDisable(true);
-            cpuMoves();
+            checkIfGameIsOver();
+            ++overallTurn;
+            if (overallTurn < 8) cpuMoves();
             checkIfGameIsOver();
         });
+
     }
     public void cpuMoves() {
         int move = randomMove();
         Button cpu = buttons.get(move);
-        if (!cpu.isDisabled() && cpu.getText().equals(' ')) cpuMoves();
-        else {
-            buttons.get(move).setText("O");
-            buttons.get(move).setDisable(true);
+        boolean disabled = false;
+        for(Button b: buttons) if(b.isDisabled()) disabled = true;
+        while (disabled && cpu.isDisabled() && !cpu.getText().isEmpty()){
+            move = randomMove();
+            cpu = buttons.get(move);
         }
+        if(disabled && !cpu.isDisabled() && cpu.getText().isEmpty()){
+        buttons.get(move).setText("O");
+        buttons.get(move).setDisable(true);
+        ++overallTurn;}
+
     }
     public int randomMove(){
-        int randomPos = ThreadLocalRandom.current().nextInt(0,8);
+        int randomPos = ThreadLocalRandom.current().nextInt(0,aux.size());
         return randomPos;
     }
 
@@ -138,16 +158,18 @@ public class GameInterfaceController implements Initializable {
             };
 
             //X winner
-            if (line.equals("XXX")) {
+            if (line.equals("XXX") || (line.equals("XXX") && overallTurn > 8)) {
                 winnerText.setText("X won!");
-                buttons.forEach(this::resetButton);
+                for(Button b: buttons) b.setDisable(true);
+                //buttons.forEach(this::resetButton);
                 overallTurn = 0;
             }
 
             //O winner
             else if (line.equals("OOO")) {
                 winnerText.setText("O won!");
-                buttons.forEach(this::resetButton);
+                for(Button b: buttons) b.setDisable(true);
+                //buttons.forEach(this::resetButton);
                 overallTurn = 0;
             }
             else if (overallTurn == 9) {
