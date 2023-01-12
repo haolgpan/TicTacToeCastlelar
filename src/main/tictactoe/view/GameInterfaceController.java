@@ -52,6 +52,7 @@ public class GameInterfaceController implements Initializable {
     private MainApp mainApp;
     @FXML
     private ToggleGroup radioGroup = new ToggleGroup();
+    private boolean gameOver = false;
 
 
     @Override
@@ -60,7 +61,9 @@ public class GameInterfaceController implements Initializable {
         cpuVscpu.setToggleGroup(radioGroup);
         humVscpu.setToggleGroup(radioGroup);
         humVshum.setToggleGroup(radioGroup);
+        for(Button b: buttons) b.setDisable(true);
         start.setOnAction(e -> {
+            for(Button b: buttons) b.setDisable(false);
             if (humVscpu.isSelected()){
                 buttons.forEach(button -> {
                     setupButtonCpu(button);
@@ -75,6 +78,7 @@ public class GameInterfaceController implements Initializable {
                 });
             }
             else if (cpuVscpu.isSelected()){
+                setupButtonCpuvsCpu();
 
             }
         });
@@ -84,7 +88,9 @@ public class GameInterfaceController implements Initializable {
     @FXML
     void restartGame(ActionEvent event) {
         buttons.forEach(this::resetButton);
+        for(Button b: buttons) b.setDisable(true);
         winnerText.setText(" ");
+        gameOver = false;
         overallTurn = 0;
     }
     public void resetButton(Button button){
@@ -107,6 +113,18 @@ public class GameInterfaceController implements Initializable {
         } else{
             button.setText("O");
             playerTurn = 0;
+        }
+    }
+    public void setupButtonCpuvsCpu(){
+        while(!gameOver && overallTurn <8) {
+            cpuMoves2();
+            checkIfGameIsOver();
+            cpuMoves();
+            checkIfGameIsOver();
+        }
+        if(!gameOver && overallTurn == 8) {
+            cpuMoves2();
+            checkIfGameIsOver();
         }
     }
     private void setupButtonCpu(Button button) {
@@ -136,6 +154,26 @@ public class GameInterfaceController implements Initializable {
         ++overallTurn;
         }
     }
+    public void cpuMoves2() {
+        int move = randomMove();
+        Button cpu = buttons.get(move);
+        boolean disabled = false;
+        for(Button b: buttons) if(b.isDisabled()) disabled = true;
+        while (disabled && !cpu.getText().isEmpty() && cpu.isDisabled()){
+            move = randomMove();
+            cpu = buttons.get(move);
+        }
+        if(!disabled && !cpu.isDisabled() && cpu.getText().isEmpty() && overallTurn < 2){
+            buttons.get(move).setText("X");
+            buttons.get(move).setDisable(true);
+            ++overallTurn;
+        }
+        else if (disabled && !cpu.isDisabled() && cpu.getText().isEmpty() && overallTurn > 1) {
+            buttons.get(move).setText("X");
+            buttons.get(move).setDisable(true);
+            ++overallTurn;
+        }
+    }
     public int randomMove(){
         int randomPos = ThreadLocalRandom.current().nextInt(0,buttons.size());
         return randomPos;
@@ -157,6 +195,7 @@ public class GameInterfaceController implements Initializable {
 
             //X winner
             if (line.equals("XXX")) {
+                gameOver = true;
                 winnerText.setText("X won!");
                 for(Button b: buttons) b.setDisable(true);
                 //buttons.forEach(this::resetButton);
@@ -165,12 +204,14 @@ public class GameInterfaceController implements Initializable {
 
             //O winner
             else if (line.equals("OOO")) {
+                gameOver = true;
                 winnerText.setText("O won!");
                 for(Button b: buttons) b.setDisable(true);
                 //buttons.forEach(this::resetButton);
                 overallTurn = 0;
             }
             else if (overallTurn == 9) {
+                gameOver = true;
                 winnerText.setText("It's a draw!");
                 //buttons.forEach(this::resetButton);
                 overallTurn = 0;
