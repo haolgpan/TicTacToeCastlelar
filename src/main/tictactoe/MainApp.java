@@ -6,9 +6,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.tictactoe.view.GameInterfaceController;
+import main.tictactoe.view.StatisticsController;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,6 +65,23 @@ public class MainApp extends Application {
             GameInterfaceController controller = loader.getController();
             controller.setMainApp(this);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void showStatistics(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/Statistics.fxml"));
+            BorderPane stats = loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Statistics");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(stats);
+            dialogStage.setScene(scene);
+            dialogStage.show();
+            StatisticsController controller = loader.getController();
+        }catch (IOException e){
             e.printStackTrace();
         }
     }

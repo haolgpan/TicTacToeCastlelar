@@ -2,13 +2,21 @@ package main.tictactoe.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import main.tictactoe.MainApp;
+import main.tictactoe.model.Person;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +25,8 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameInterfaceController implements Initializable {
+    private Stage primaryStage;
+    ArrayList<Person> persons;
 
     ArrayList<Button> buttons;
     @FXML
@@ -53,14 +63,15 @@ public class GameInterfaceController implements Initializable {
     @FXML
     private ToggleGroup radioGroup = new ToggleGroup();
     private boolean gameOver = false;
+    private boolean cpu = false;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buttons = new ArrayList<>(Arrays.asList(b1,b2,b3,b4,b5,b6,b7,b8,b9));
-        cpuVscpu.setToggleGroup(radioGroup);
         humVscpu.setToggleGroup(radioGroup);
         humVshum.setToggleGroup(radioGroup);
+        cpuVscpu.setToggleGroup(radioGroup);
         for(Button b: buttons) b.setDisable(true);
         start.setOnAction(e -> {
             for(Button b: buttons) b.setDisable(false);
@@ -71,19 +82,23 @@ public class GameInterfaceController implements Initializable {
                 });
             }
             else if (humVshum.isSelected()){
+                overallTurn = 0;
+                playerTurn = 0;
                 buttons.forEach(button ->{
                     setupButton(button);
                     button.setFocusTraversable(false);
-                    overallTurn = 0;
                 });
             }
             else if (cpuVscpu.isSelected()){
                 setupButtonCpuvsCpu();
-
             }
         });
 
-        }
+    }
+    @FXML
+    public void handleStats(ActionEvent event){
+        mainApp.showStatistics();
+    }
 
     @FXML
     void restartGame(ActionEvent event) {
@@ -97,8 +112,35 @@ public class GameInterfaceController implements Initializable {
         button.setDisable(false);
         button.setText("");
     }
+    public void setupButtonCpuvsCpu(){
+        cpu = true;
+        while(!gameOver && overallTurn <8) {
+            cpuMoves2();
+            checkIfGameIsOver();
+            cpuMoves();
+            checkIfGameIsOver();
+        }
+        if(!gameOver && overallTurn == 8) {
+            cpuMoves2();
+            checkIfGameIsOver();
+        }
+    }
+    private void setupButtonCpu(Button button) {
+        cpu = true;
+        button.setOnMouseClicked(mouseEvent -> {
+            button.setText("X");
+            button.setDisable(true);
+            ++overallTurn;
+            if (overallTurn < 8) {
+                cpuMoves();
+                checkIfGameIsOver();
+            }
+            checkIfGameIsOver();
+        });
+    }
 
     private void setupButton(Button button) {
+        cpu = false;
         button.setOnMouseClicked(mouseEvent -> {
             setPlayerSymbol(button);
             button.setDisable(true);
@@ -114,30 +156,6 @@ public class GameInterfaceController implements Initializable {
             button.setText("O");
             playerTurn = 0;
         }
-    }
-    public void setupButtonCpuvsCpu(){
-        while(!gameOver && overallTurn <8) {
-            cpuMoves2();
-            checkIfGameIsOver();
-            cpuMoves();
-            checkIfGameIsOver();
-        }
-        if(!gameOver && overallTurn == 8) {
-            cpuMoves2();
-            checkIfGameIsOver();
-        }
-    }
-    private void setupButtonCpu(Button button) {
-        button.setOnMouseClicked(mouseEvent -> {
-            button.setText("X");
-            button.setDisable(true);
-            ++overallTurn;
-            if (overallTurn < 8) {
-                cpuMoves();
-                checkIfGameIsOver();
-            }
-            checkIfGameIsOver();
-        });
     }
     public void cpuMoves() {
         int move = randomMove();
@@ -200,6 +218,7 @@ public class GameInterfaceController implements Initializable {
                 for(Button b: buttons) b.setDisable(true);
                 //buttons.forEach(this::resetButton);
                 overallTurn = 0;
+                if(!cpu)winnerInsert();
             }
 
             //O winner
@@ -209,6 +228,7 @@ public class GameInterfaceController implements Initializable {
                 for(Button b: buttons) b.setDisable(true);
                 //buttons.forEach(this::resetButton);
                 overallTurn = 0;
+                if(!cpu)winnerInsert();
             }
             else if (overallTurn == 9) {
                 gameOver = true;
@@ -216,6 +236,22 @@ public class GameInterfaceController implements Initializable {
                 //buttons.forEach(this::resetButton);
                 overallTurn = 0;
             }
+        }
+    }
+    public void winnerInsert() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/Winner.fxml"));
+            AnchorPane winner = loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(winner);
+            dialogStage.setScene(scene);
+            dialogStage.show();
+            WinnerController controller = loader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     public void setMainApp(MainApp mainApp) {
