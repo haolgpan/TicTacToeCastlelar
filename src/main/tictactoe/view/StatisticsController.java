@@ -24,7 +24,6 @@ public class StatisticsController {
     @FXML
     TableColumn<Person, Integer> tiedCol;
 
-
     public void init(ObservableList<Person> personData){
         nameCol.setCellValueFactory(new PropertyValueFactory<Person, String>("Name"));
         winCol.setCellValueFactory(new PropertyValueFactory<Person, Integer>("Win"));
