@@ -1,5 +1,7 @@
 package main.tictactoe.view;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -20,13 +23,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameInterfaceController implements Initializable {
     private Stage primaryStage;
-    ArrayList<Person> persons;
+    ArrayList<Person> persons = new ArrayList<>();
 
     ArrayList<Button> buttons;
     @FXML
@@ -63,7 +65,10 @@ public class GameInterfaceController implements Initializable {
     @FXML
     private ToggleGroup radioGroup = new ToggleGroup();
     private boolean gameOver = false;
-    private boolean cpu = false;
+    private boolean cpu1 = false;
+    private boolean cpu2 = false;
+    private String combination = "";
+    private ObservableList<Person> personData = FXCollections.observableArrayList();
 
 
     @Override
@@ -72,16 +77,20 @@ public class GameInterfaceController implements Initializable {
         humVscpu.setToggleGroup(radioGroup);
         humVshum.setToggleGroup(radioGroup);
         cpuVscpu.setToggleGroup(radioGroup);
+        persons.add(new Person("Cpu"));
         for(Button b: buttons) b.setDisable(true);
         start.setOnAction(e -> {
             for(Button b: buttons) b.setDisable(false);
             if (humVscpu.isSelected()){
+                cpu1 = true;
                 buttons.forEach(button -> {
                     setupButtonCpu(button);
                     button.setFocusTraversable(false);
                 });
             }
             else if (humVshum.isSelected()){
+                cpu1 = false;
+                cpu2 = false;
                 overallTurn = 0;
                 playerTurn = 0;
                 buttons.forEach(button ->{
@@ -90,14 +99,36 @@ public class GameInterfaceController implements Initializable {
                 });
             }
             else if (cpuVscpu.isSelected()){
+                cpu1 = true;
+                cpu2 = true;
                 setupButtonCpuvsCpu();
             }
         });
-
     }
     @FXML
     public void handleStats(ActionEvent event){
-        mainApp.showStatistics();
+        showStatistics();
+    }
+    public void showStatistics(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/Statistics.fxml"));
+            BorderPane stats = loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Statistics");
+            dialogStage.getIcons().add(new Image("file:resources/stats.png"));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(stats);
+            dialogStage.setScene(scene);
+            dialogStage.show();
+            //for(Person p: persons) personData.add(p);
+            personData = FXCollections.observableArrayList(persons);
+            StatisticsController controller = loader.getController();
+            controller.init(personData);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -113,7 +144,6 @@ public class GameInterfaceController implements Initializable {
         button.setText("");
     }
     public void setupButtonCpuvsCpu(){
-        cpu = true;
         while(!gameOver && overallTurn <8) {
             cpuMoves2();
             checkIfGameIsOver();
@@ -126,21 +156,19 @@ public class GameInterfaceController implements Initializable {
         }
     }
     private void setupButtonCpu(Button button) {
-        cpu = true;
         button.setOnMouseClicked(mouseEvent -> {
             button.setText("X");
             button.setDisable(true);
             ++overallTurn;
             if (overallTurn < 8) {
                 cpuMoves();
-                checkIfGameIsOver();
+                if(!gameOver)checkIfGameIsOver();
             }
-            checkIfGameIsOver();
+            if(!gameOver)checkIfGameIsOver();
         });
     }
 
     private void setupButton(Button button) {
-        cpu = false;
         button.setOnMouseClicked(mouseEvent -> {
             setPlayerSymbol(button);
             button.setDisable(true);
@@ -213,26 +241,29 @@ public class GameInterfaceController implements Initializable {
 
             //X winner
             if (line.equals("XXX")) {
+                combination = line;
                 gameOver = true;
                 winnerText.setText("X won!");
                 for(Button b: buttons) b.setDisable(true);
                 //buttons.forEach(this::resetButton);
                 overallTurn = 0;
-                if(!cpu)winnerInsert();
+                if(cpu1 && !cpu2 || !cpu1 && !cpu2)winnerInsert();
             }
 
             //O winner
             else if (line.equals("OOO")) {
+                combination = line;
                 gameOver = true;
                 winnerText.setText("O won!");
                 for(Button b: buttons) b.setDisable(true);
                 //buttons.forEach(this::resetButton);
                 overallTurn = 0;
-                if(!cpu)winnerInsert();
+                if(cpu1 && !cpu2 || !cpu1 && !cpu2)winnerInsert();
             }
             else if (overallTurn == 9) {
                 gameOver = true;
                 winnerText.setText("It's a draw!");
+                String estate = "DRAW";
                 //buttons.forEach(this::resetButton);
                 overallTurn = 0;
             }
@@ -250,6 +281,13 @@ public class GameInterfaceController implements Initializable {
             dialogStage.setScene(scene);
             dialogStage.show();
             WinnerController controller = loader.getController();
+            if(cpu1) controller.playerOName.setDisable(true);
+            controller.getSubmit().setOnMouseClicked(e -> {
+                controller.addStats(persons,combination, cpu1);
+                dialogStage.close();
+                persons.forEach(System.out::println);
+            });
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

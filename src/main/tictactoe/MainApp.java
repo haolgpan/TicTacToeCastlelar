@@ -68,22 +68,6 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
     }
-    public void showStatistics(){
-        try{
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/Statistics.fxml"));
-            BorderPane stats = loader.load();
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Statistics");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
-            Scene scene = new Scene(stats);
-            dialogStage.setScene(scene);
-            dialogStage.show();
-            StatisticsController controller = loader.getController();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
+
 }
 

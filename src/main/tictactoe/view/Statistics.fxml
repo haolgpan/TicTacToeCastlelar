@@ -9,9 +9,9 @@
       <TableView fx:id="personTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="305.0" prefWidth="218.0" BorderPane.alignment="CENTER">
          <columns>
             <TableColumn fx:id="nameCol" prefWidth="75.0" text="Name" />
-            <TableColumn fx:id="winColumn" prefWidth="75.0" text="Win" />
-            <TableColumn fx:id="lostColumn" prefWidth="75.0" text="Lost" />
-            <TableColumn fx:id="tiedColumn" prefWidth="75.0" text="Tied" />
+            <TableColumn fx:id="winCol" prefWidth="75.0" text="Win" />
+            <TableColumn fx:id="loseCol" prefWidth="75.0" text="Lost" />
+            <TableColumn fx:id="tiedCol" prefWidth="75.0" text="Tied" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
