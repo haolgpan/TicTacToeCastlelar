@@ -21,9 +21,7 @@ import main.tictactoe.model.Person;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameInterfaceController implements Initializable {
@@ -217,7 +215,7 @@ public class GameInterfaceController implements Initializable {
             };
             System.out.println(line);
             //X winner
-            if (line.equals("XXX")) {
+            if (line.equals("XXX") && !gameOver) {
                 combination = line;
                 gameOver = true;
                 winnerText.setText("X won!");
@@ -280,6 +278,7 @@ public class GameInterfaceController implements Initializable {
             Scene scene = new Scene(stats);
             dialogStage.setScene(scene);
             dialogStage.show();
+            Collections.sort(persons);
             personData = FXCollections.observableArrayList(persons);
             StatisticsController controller = loader.getController();
             controller.init(personData);

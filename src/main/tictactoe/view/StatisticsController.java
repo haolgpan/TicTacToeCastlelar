@@ -12,15 +12,15 @@ import main.tictactoe.model.Person;
 
 public class StatisticsController {
     @FXML
-    TableView<Person> personTable;
+    private TableView<Person> personTable;
     @FXML
-    TableColumn<Person, String> nameCol;
+    private TableColumn<Person, String> nameCol;
     @FXML
-    TableColumn<Person, Integer> winCol;
+    private TableColumn<Person, Integer> winCol;
     @FXML
-    TableColumn<Person, Integer> loseCol;
+    private TableColumn<Person, Integer> loseCol;
     @FXML
-    TableColumn<Person, Integer> tiedCol;
+    private TableColumn<Person, Integer> tiedCol;
 
     public void init(ObservableList<Person> personData){
         nameCol.setCellValueFactory(new PropertyValueFactory<Person, String>("Name"));

@@ -1,6 +1,6 @@
 package main.tictactoe.model;
 
-public class Person {
+public class Person implements Comparable<Person>{
     public String name;
     public int win;
     public int lose;
@@ -45,6 +45,7 @@ public class Person {
         this.tied = tied;
     }
 
+
     @Override
     public String toString() {
         return "Person{" +
@@ -53,5 +54,12 @@ public class Person {
                 ", lose=" + lose +
                 ", tied=" + tied +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Person person) {
+        if(this.win < person.getWin()) return 1;
+        else if (this.win > person.getWin()) return -1;
+        else return 0;
     }
 }
