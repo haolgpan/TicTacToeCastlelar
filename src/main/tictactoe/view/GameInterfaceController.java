@@ -18,7 +18,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.tictactoe.MainApp;
 import main.tictactoe.model.Person;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -78,7 +77,14 @@ public class GameInterfaceController implements Initializable {
         persons.add(new Person("Cpu"));
         for(Button b: buttons) b.setDisable(true);
         start.setOnAction(e -> {
-            for(Button b: buttons) b.setDisable(false);
+            for (Button button : buttons) {
+                buttons.forEach(this::resetButton);
+                for(Button b: buttons) b.setDisable(true);
+                winnerText.setText(" ");
+                gameOver = false;
+                overallTurn = 0;
+            };
+            for(Button b : buttons) b.setDisable(false);
             if (humVscpu.isSelected()){
                 cpu1 = true;
                 buttons.forEach(button -> {
@@ -213,7 +219,6 @@ public class GameInterfaceController implements Initializable {
                 case 7 -> b3.getText() + b6.getText() + b9.getText();
                 default -> null;
             };
-            System.out.println(line);
             //X winner
             if (line.equals("XXX") && !gameOver) {
                 combination = line;
@@ -234,6 +239,7 @@ public class GameInterfaceController implements Initializable {
                 if(cpu1 && !cpu2 || !cpu1 && !cpu2)winnerInsert();
             }
         }
+        //DRAW
         if (!gameOver && overallTurn == 9) {
             combination = "DRAW";
             gameOver = true;
@@ -248,6 +254,7 @@ public class GameInterfaceController implements Initializable {
             loader.setLocation(MainApp.class.getResource("view/Winner.fxml"));
             AnchorPane winner = loader.load();
             Stage dialogStage = new Stage();
+            //Possibility to not record stats
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(winner);
