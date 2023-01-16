@@ -6,7 +6,7 @@
 
 <BorderPane prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.tictactoe.view.StatisticsController">
    <center>
-      <TableView fx:id="personTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="305.0" prefWidth="218.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="personTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="305.0" prefWidth="218.0" stylesheets="@DarkTheme.css" BorderPane.alignment="CENTER">
          <columns>
             <TableColumn fx:id="nameCol" prefWidth="75.0" text="Name" />
             <TableColumn fx:id="winCol" prefWidth="75.0" text="Win" />

@@ -109,28 +109,6 @@ public class GameInterfaceController implements Initializable {
     public void handleStats(ActionEvent event){
         showStatistics();
     }
-    public void showStatistics(){
-        try{
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/Statistics.fxml"));
-            BorderPane stats = loader.load();
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Statistics");
-            dialogStage.getIcons().add(new Image("file:resources/stats.png"));
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
-            Scene scene = new Scene(stats);
-            dialogStage.setScene(scene);
-            dialogStage.show();
-            //for(Person p: persons) personData.add(p);
-            personData = FXCollections.observableArrayList(persons);
-            StatisticsController controller = loader.getController();
-            controller.init(personData);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
     @FXML
     void restartGame(ActionEvent event) {
         buttons.forEach(this::resetButton);
@@ -166,24 +144,6 @@ public class GameInterfaceController implements Initializable {
             }
             if(!gameOver)checkIfGameIsOver();
         });
-    }
-
-    private void setupButton(Button button) {
-        button.setOnMouseClicked(mouseEvent -> {
-            setPlayerSymbol(button);
-            button.setDisable(true);
-            ++overallTurn;
-            checkIfGameIsOver();
-        });
-    }
-    public void setPlayerSymbol(Button button){
-        if(playerTurn % 2 == 0){
-            button.setText("X");
-            playerTurn = 1;
-        } else{
-            button.setText("O");
-            playerTurn = 0;
-        }
     }
     public void cpuMoves() {
         int move = randomMove();
@@ -224,7 +184,24 @@ public class GameInterfaceController implements Initializable {
         int randomPos = ThreadLocalRandom.current().nextInt(0,buttons.size());
         return randomPos;
     }
+    private void setupButton(Button button) {
+        button.setOnMouseClicked(mouseEvent -> {
+            setPlayerSymbol(button);
+            button.setDisable(true);
+            ++overallTurn;
+            if(!gameOver) checkIfGameIsOver();
 
+        });
+    }
+    public void setPlayerSymbol(Button button){
+        if(playerTurn % 2 == 0){
+            button.setText("X");
+            playerTurn = 1;
+        } else{
+            button.setText("O");
+            playerTurn = 0;
+        }
+    }
     public void checkIfGameIsOver(){
         for (int a = 0; a < 8; a++) {
             String line = switch (a) {
@@ -238,14 +215,13 @@ public class GameInterfaceController implements Initializable {
                 case 7 -> b3.getText() + b6.getText() + b9.getText();
                 default -> null;
             };
-
+            System.out.println(line);
             //X winner
             if (line.equals("XXX")) {
                 combination = line;
                 gameOver = true;
                 winnerText.setText("X won!");
                 for(Button b: buttons) b.setDisable(true);
-                //buttons.forEach(this::resetButton);
                 overallTurn = 0;
                 if(cpu1 && !cpu2 || !cpu1 && !cpu2)winnerInsert();
             }
@@ -256,17 +232,16 @@ public class GameInterfaceController implements Initializable {
                 gameOver = true;
                 winnerText.setText("O won!");
                 for(Button b: buttons) b.setDisable(true);
-                //buttons.forEach(this::resetButton);
                 overallTurn = 0;
                 if(cpu1 && !cpu2 || !cpu1 && !cpu2)winnerInsert();
             }
-            else if (overallTurn == 9) {
-                gameOver = true;
-                winnerText.setText("It's a draw!");
-                String estate = "DRAW";
-                //buttons.forEach(this::resetButton);
-                overallTurn = 0;
-            }
+        }
+        if (!gameOver && overallTurn == 9) {
+            combination = "DRAW";
+            gameOver = true;
+            winnerText.setText("It's a draw!");
+            overallTurn = 0;
+            if(cpu1 && !cpu2 || !cpu1 && !cpu2)winnerInsert();
         }
     }
     public void winnerInsert() {
@@ -281,15 +256,35 @@ public class GameInterfaceController implements Initializable {
             dialogStage.setScene(scene);
             dialogStage.show();
             WinnerController controller = loader.getController();
-            if(cpu1) controller.playerOName.setDisable(true);
+            if(cpu1) controller.turnOffTextO();
             controller.getSubmit().setOnMouseClicked(e -> {
-                controller.addStats(persons,combination, cpu1);
+                controller.addStats(persons, combination, cpu1);
                 dialogStage.close();
                 persons.forEach(System.out::println);
             });
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+    public void showStatistics(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/Statistics.fxml"));
+            BorderPane stats = loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Statistics");
+            dialogStage.getIcons().add(new Image("file:resources/stats.png"));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(stats);
+            dialogStage.setScene(scene);
+            dialogStage.show();
+            personData = FXCollections.observableArrayList(persons);
+            StatisticsController controller = loader.getController();
+            controller.init(personData);
+        }catch (IOException e){
+            e.printStackTrace();
         }
     }
     public void setMainApp(MainApp mainApp) {

@@ -5,13 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.tictactoe.view.GameInterfaceController;
-import main.tictactoe.view.StatisticsController;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,6 +64,5 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
     }
-
 }
 

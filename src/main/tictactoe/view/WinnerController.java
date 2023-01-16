@@ -1,21 +1,18 @@
 package main.tictactoe.view;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import main.tictactoe.model.Person;
-
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
+
 
 public class WinnerController {
 
     @FXML
     private TextField playerXName;
     @FXML
-    public TextField playerOName;
+    private TextField playerOName;
     @FXML
     private Button submit;
     private boolean foundX = false;
@@ -30,6 +27,9 @@ public class WinnerController {
 
     public void setSubmit(Button submit) {
         this.submit = submit;
+    }
+    public void turnOffTextO (){
+        playerOName.setDisable(true);
     }
 
 
@@ -56,8 +56,6 @@ public class WinnerController {
                         if(persons.get(i).getName().equals(playerOName.getText()))
                             persons.get(i).setLose(persons.get(i).getLose()+1);
                     }
-                    /*else for(Person pO : persons) if(pO.getName().equals(playerOName.getText()))
-                        pO.setLose(p.getLose()+1);*/
                 }
             }
             else if(winner.equals("OOO")){
@@ -66,6 +64,14 @@ public class WinnerController {
                     if(cpu)persons.get(0).setWin(persons.get(0).getWin()+1);
                     else for(Person pO : persons) if(pO.getName().equals(playerOName.getText()))
                         pO.setWin(p.getWin()+1);
+                }
+            } else if (winner.equals("DRAW")) {
+                if(p.getName().equals(playerXName.getText())) {
+                    p.setTied(p.getTied() + 1);
+                    if (cpu) persons.get(0).setTied(persons.get(0).getTied() + 1);
+                    else for (Person pO : persons)
+                        if (pO.getName().equals(playerOName.getText()))
+                            pO.setTied(p.getTied()); //Whaaaaat?
                 }
             }
         }
