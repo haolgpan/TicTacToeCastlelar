@@ -3,9 +3,10 @@ package main.tictactoe.view;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import main.tictactoe.model.Person;
 import java.util.ArrayList;
-
 
 public class WinnerController {
 
@@ -15,11 +16,12 @@ public class WinnerController {
     private TextField playerOName;
     @FXML
     private Button submit;
+    @FXML
+    private ImageView winner;
     private boolean foundX = false;
     private boolean foundO = false;
     private int Xindex;
     private int Oindex;
-    private GameInterfaceController thisController;
 
     public Button getSubmit() {
         return submit;
@@ -31,9 +33,6 @@ public class WinnerController {
     public void turnOffTextO (){
         playerOName.setDisable(true);
     }
-
-
-
     public void addStats(ArrayList<Person> persons, String winner, boolean cpu){
         for(int i = 0; i < persons.size(); ++i) {
             if(persons.get(i).getName().equals(playerXName.getText())) {
