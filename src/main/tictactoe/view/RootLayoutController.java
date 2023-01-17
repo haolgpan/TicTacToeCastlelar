@@ -12,9 +12,9 @@ public class RootLayoutController {
     @FXML
     private void handleAbout(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("AddressApp");
+        alert.setTitle("Tic Tac Toe");
         alert.setHeaderText("About");
-        alert.setContentText("Author: Hao Pan\n Prototipe of the game Tic Tac Toe: https://github.com/haolgpan/TicTacToeCastlelar");
+        alert.setContentText("Author: Hao Pan\nPrototipe of the game Tic Tac Toe: \nhttps://github.com/haolgpan/TicTacToeCastlelar");
         alert.showAndWait();
     }
 }

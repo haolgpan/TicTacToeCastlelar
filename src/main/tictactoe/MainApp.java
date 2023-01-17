@@ -58,7 +58,7 @@ public class MainApp extends Application {
             rootLayout.setCenter(gameInterface);
             // Give the controller access to the main app.
             GameInterfaceController controller = loader.getController();
-            controller.setMainApp(this);
+            controller.setMainApp();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -17,10 +17,6 @@ public class Person implements Comparable<Person>{
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getWin() {
         return win;
     }
@@ -58,8 +54,6 @@ public class Person implements Comparable<Person>{
 
     @Override
     public int compareTo(Person person) {
-        if(this.win < person.getWin()) return 1;
-        else if (this.win > person.getWin()) return -1;
-        else return 0;
+        return Integer.compare(person.getWin(), this.win);
     }
 }

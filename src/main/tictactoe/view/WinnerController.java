@@ -20,58 +20,58 @@ public class WinnerController {
     private ImageView winner;
     private boolean foundX = false;
     private boolean foundO = false;
-    private int Xindex;
-    private int Oindex;
 
     public Button getSubmit() {
         return submit;
     }
 
-    public void setSubmit(Button submit) {
-        this.submit = submit;
-    }
-    public void turnOffTextO (){
+    public void turnOffTextO(){
         playerOName.setDisable(true);
     }
+    public void showImage(){
+        winner.setImage(new Image("file:resources/winner.jpg"));
+    }
     public void addStats(ArrayList<Person> persons, String winner, boolean cpu){
-        for(int i = 0; i < persons.size(); ++i) {
-            if(persons.get(i).getName().equals(playerXName.getText())) {
+        for (Person person : persons) {
+            if (person.getName().equals(playerXName.getText())) {
                 foundX = true;
-                Xindex = i;
             }
-            if(persons.get(i).getName().equals(playerOName.getText())) {
+            if (person.getName().equals(playerOName.getText())) {
                 foundO = true;
-                Oindex = i;
             }
         }
         if(!foundX) persons.add(new Person(playerXName.getText()));
         if(!foundO && !playerOName.isDisabled()) persons.add(new Person(playerOName.getText()));
         for(Person p : persons) {
-            if(winner.equals("XXX")){
-                if(p.getName().equals(playerXName.getText())) {
-                    p.setWin(p.getWin()+1);
-                    if(cpu)persons.get(0).setLose(persons.get(0).getLose()+1);
-                    else for (int i = 0; i < persons.size(); i++) {
-                        if(persons.get(i).getName().equals(playerOName.getText()))
-                            persons.get(i).setLose(persons.get(i).getLose()+1);
+            switch (winner) {
+                case "XXX":
+                    if (p.getName().equals(playerXName.getText())) {
+                        p.setWin(p.getWin() + 1);
+                        if (cpu) persons.get(0).setLose(persons.get(0).getLose() + 1);
+                        else for (Person person : persons) {
+                            if (person.getName().equals(playerOName.getText()))
+                                person.setLose(person.getLose() + 1);
+                        }
                     }
-                }
-            }
-            else if(winner.equals("OOO")){
-                if(p.getName().equals(playerXName.getText())) {
-                    p.setLose(p.getLose()+1);
-                    if(cpu)persons.get(0).setWin(persons.get(0).getWin()+1);
-                    else for(Person pO : persons) if(pO.getName().equals(playerOName.getText()))
-                        pO.setWin(p.getWin()+1);
-                }
-            } else if (winner.equals("DRAW")) {
-                if(p.getName().equals(playerXName.getText())) {
-                    p.setTied(p.getTied() + 1);
-                    if (cpu) persons.get(0).setTied(persons.get(0).getTied() + 1);
-                    else for (Person pO : persons)
-                        if (pO.getName().equals(playerOName.getText()))
-                            pO.setTied(p.getTied()); //Whaaaaat?
-                }
+                    break;
+                case "OOO":
+                    if (p.getName().equals(playerXName.getText())) {
+                        p.setLose(p.getLose() + 1);
+                        if (cpu) persons.get(0).setWin(persons.get(0).getWin() + 1);
+                        else for (Person pO : persons)
+                            if (pO.getName().equals(playerOName.getText()))
+                                pO.setWin(p.getWin() + 1);
+                    }
+                    break;
+                case "DRAW":
+                    if (p.getName().equals(playerXName.getText())) {
+                        p.setTied(p.getTied() + 1);
+                        if (cpu) persons.get(0).setTied(persons.get(0).getTied() + 1);
+                        else for (Person pO : persons)
+                            if (pO.getName().equals(playerOName.getText()))
+                                pO.setTied(p.getTied());
+                    }
+                    break;
             }
         }
     }

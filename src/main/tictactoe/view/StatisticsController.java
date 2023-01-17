@@ -23,10 +23,10 @@ public class StatisticsController {
     private TableColumn<Person, Integer> tiedCol;
 
     public void init(ObservableList<Person> personData){
-        nameCol.setCellValueFactory(new PropertyValueFactory<Person, String>("Name"));
-        winCol.setCellValueFactory(new PropertyValueFactory<Person, Integer>("Win"));
-        loseCol.setCellValueFactory(new PropertyValueFactory<Person, Integer>("Lose"));
-        tiedCol.setCellValueFactory(new PropertyValueFactory<Person, Integer>("Tied"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        winCol.setCellValueFactory(new PropertyValueFactory<>("Win"));
+        loseCol.setCellValueFactory(new PropertyValueFactory<>("Lose"));
+        tiedCol.setCellValueFactory(new PropertyValueFactory<>("Tied"));
         personTable.setItems(personData);
     }
 }

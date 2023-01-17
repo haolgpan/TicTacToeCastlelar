@@ -2,7 +2,6 @@ package main.tictactoe.view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,6 +23,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameInterfaceController implements Initializable {
+    public Button stats;
     private Stage primaryStage;
     ArrayList<Person> persons = new ArrayList<>();
 
@@ -58,14 +58,12 @@ public class GameInterfaceController implements Initializable {
     private RadioButton humVshum;
     private int playerTurn = 0;
     private int overallTurn = 0;
-    private MainApp mainApp;
     @FXML
     private ToggleGroup radioGroup = new ToggleGroup();
     private boolean gameOver = false;
     private boolean cpu1 = false;
     private boolean cpu2 = false;
     private String combination = "";
-    private ObservableList<Person> personData = FXCollections.observableArrayList();
 
 
     @Override
@@ -77,13 +75,12 @@ public class GameInterfaceController implements Initializable {
         persons.add(new Person("Cpu"));
         for(Button b: buttons) b.setDisable(true);
         start.setOnAction(e -> {
-            for (Button button : buttons) {
-                buttons.forEach(this::resetButton);
-                for(Button b: buttons) b.setDisable(true);
-                winnerText.setText(" ");
-                gameOver = false;
-                overallTurn = 0;
-            };
+            buttons.forEach(this::resetButton);
+            for(Button b: buttons) b.setDisable(true);
+            winnerText.setText(" ");
+            gameOver = false;
+            overallTurn = 0;
+
             for(Button b : buttons) b.setDisable(false);
             if (humVscpu.isSelected()){
                 cpu1 = true;
@@ -110,11 +107,11 @@ public class GameInterfaceController implements Initializable {
         });
     }
     @FXML
-    public void handleStats(ActionEvent event){
+    public void handleStats(){
         showStatistics();
     }
     @FXML
-    void restartGame(ActionEvent event) {
+    void restartGame() {
         buttons.forEach(this::resetButton);
         for(Button b: buttons) b.setDisable(true);
         winnerText.setText(" ");
@@ -185,8 +182,7 @@ public class GameInterfaceController implements Initializable {
         }
     }
     public int randomMove(){
-        int randomPos = ThreadLocalRandom.current().nextInt(0,buttons.size());
-        return randomPos;
+        return ThreadLocalRandom.current().nextInt(0,buttons.size());
     }
     private void setupButton(Button button) {
         button.setOnMouseClicked(mouseEvent -> {
@@ -258,8 +254,10 @@ public class GameInterfaceController implements Initializable {
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(winner);
             dialogStage.setScene(scene);
+            dialogStage.getIcons().add(new Image("file:resources/winner.jpg"));
             dialogStage.show();
             WinnerController controller = loader.getController();
+            controller.showImage();
             if(cpu1) controller.turnOffTextO();
             controller.getSubmit().setOnMouseClicked(e -> {
                 controller.addStats(persons, combination, cpu1);
@@ -285,14 +283,13 @@ public class GameInterfaceController implements Initializable {
             dialogStage.setScene(scene);
             dialogStage.show();
             Collections.sort(persons);
-            personData = FXCollections.observableArrayList(persons);
+            ObservableList<Person> personData = FXCollections.observableArrayList(persons);
             StatisticsController controller = loader.getController();
             controller.init(personData);
         }catch (IOException e){
             e.printStackTrace();
         }
     }
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
+    public void setMainApp() {
     }
 }
