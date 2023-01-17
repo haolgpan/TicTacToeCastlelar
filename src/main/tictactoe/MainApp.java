@@ -9,7 +9,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.tictactoe.view.GameInterfaceController;
 import java.io.IOException;
-
 public class MainApp extends Application {
 
     private Stage primaryStage;
