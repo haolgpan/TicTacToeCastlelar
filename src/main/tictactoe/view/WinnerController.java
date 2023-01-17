@@ -46,10 +46,11 @@ public class WinnerController {
     }
 
     /**
-     * Method
-     * @param persons
-     * @param winner
-     * @param cpu
+     * Method to add a player to an arraylist of players(Person),
+     * set data of the played games and record it for statistics.
+     * @param persons Arraylist of players.
+     * @param winner Winner combination(XXX, OOO, DRAW).
+     * @param cpu Check if a human plays or a cpu.
      */
     public void addStats(ArrayList<Person> persons, String winner, boolean cpu){
         for (Person person : persons) {
