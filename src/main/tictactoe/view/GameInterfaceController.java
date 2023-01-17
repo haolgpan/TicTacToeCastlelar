@@ -24,9 +24,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GameInterfaceController implements Initializable {
     public Button stats;
-    ArrayList<Person> persons = new ArrayList<>();
-
-    ArrayList<Button> buttons;
+    private final ArrayList<Person> persons = new ArrayList<>();
+    private ArrayList<Button> buttons;
     @FXML
     private Button b1;
     @FXML
@@ -261,7 +260,6 @@ public class GameInterfaceController implements Initializable {
             controller.getSubmit().setOnMouseClicked(e -> {
                 controller.addStats(persons, combination, cpu1);
                 dialogStage.close();
-                persons.forEach(System.out::println);//For testing purposes
             });
 
         } catch (IOException e) {
@@ -281,8 +279,9 @@ public class GameInterfaceController implements Initializable {
             Scene scene = new Scene(stats);
             dialogStage.setScene(scene);
             dialogStage.show();
-            Collections.sort(persons);
-            ObservableList<Person> personData = FXCollections.observableArrayList(persons);
+            ArrayList<Person> personsSorted = new ArrayList<>(persons);
+            personsSorted.sort(Comparator.comparingInt(Person::getWin).reversed());
+            ObservableList<Person> personData = FXCollections.observableArrayList(personsSorted);
             StatisticsController controller = loader.getController();
             controller.init(personData);
         }catch (IOException e){

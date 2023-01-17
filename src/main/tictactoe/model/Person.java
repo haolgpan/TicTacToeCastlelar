@@ -1,10 +1,10 @@
 package main.tictactoe.model;
 
-public class Person implements Comparable<Person>{
-    public String name;
-    public int win;
-    public int lose;
-    public int tied;
+public class Person{
+    private final String name;
+    private int win;
+    private int lose;
+    private int tied;
 
     public Person(String name) {
         this.name = name;
@@ -39,21 +39,5 @@ public class Person implements Comparable<Person>{
 
     public void setTied(int tied) {
         this.tied = tied;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", win=" + win +
-                ", lose=" + lose +
-                ", tied=" + tied +
-                '}';
-    }
-
-    @Override
-    public int compareTo(Person person) {
-        return Integer.compare(person.getWin(), this.win);
     }
 }
