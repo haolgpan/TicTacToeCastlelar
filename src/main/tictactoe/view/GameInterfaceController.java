@@ -24,7 +24,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GameInterfaceController implements Initializable {
     public Button stats;
-    private Stage primaryStage;
     ArrayList<Person> persons = new ArrayList<>();
 
     ArrayList<Button> buttons;
@@ -251,7 +250,7 @@ public class GameInterfaceController implements Initializable {
             AnchorPane winner = loader.load();
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL); //Possibility to not record stats
-            dialogStage.initOwner(primaryStage);
+            dialogStage.initOwner(new Stage());
             Scene scene = new Scene(winner);
             dialogStage.setScene(scene);
             dialogStage.getIcons().add(new Image("file:resources/winner.jpg"));
@@ -262,7 +261,7 @@ public class GameInterfaceController implements Initializable {
             controller.getSubmit().setOnMouseClicked(e -> {
                 controller.addStats(persons, combination, cpu1);
                 dialogStage.close();
-                persons.forEach(System.out::println);
+                persons.forEach(System.out::println);//For testing purposes
             });
 
         } catch (IOException e) {
@@ -278,7 +277,7 @@ public class GameInterfaceController implements Initializable {
             dialogStage.setTitle("Statistics");
             dialogStage.getIcons().add(new Image("file:resources/stats.png"));
             dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
+            dialogStage.initOwner(new Stage());
             Scene scene = new Scene(stats);
             dialogStage.setScene(scene);
             dialogStage.show();
@@ -292,4 +291,5 @@ public class GameInterfaceController implements Initializable {
     }
     public void setMainApp() {
     }
+
 }
