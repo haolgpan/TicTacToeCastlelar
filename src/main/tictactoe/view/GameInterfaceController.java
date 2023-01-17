@@ -78,7 +78,6 @@ public class GameInterfaceController implements Initializable {
             winnerText.setText(" ");
             gameOver = false;
             overallTurn = 0;
-
             for(Button b : buttons) b.setDisable(false);
             if (humVscpu.isSelected()){
                 cpu1 = true;
@@ -223,7 +222,6 @@ public class GameInterfaceController implements Initializable {
                 overallTurn = 0;
                 if(cpu1 && !cpu2 || !cpu1 && !cpu2)winnerInsert();
             }
-
             //O winner
             else if (line.equals("OOO")) {
                 combination = line;
