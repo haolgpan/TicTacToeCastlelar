@@ -10,7 +10,7 @@
 
 <AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="400.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.tictactoe.view.WinnerController">
    <children>
-      <Text layoutX="23.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert player 'X' name:" AnchorPane.bottomAnchor="79.7333984375" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="211.98876953125" AnchorPane.topAnchor="177.6552734375">
+      <Text layoutX="23.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert player 'X' name:" AnchorPane.bottomAnchor="104.7333984375" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="211.98876953125" AnchorPane.topAnchor="152.6552734375">
          <font>
             <Font size="17.0" />
          </font>
@@ -20,13 +20,13 @@
             <Image url="@winner.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="submit" layoutX="257.0" layoutY="352.0" mnemonicParsing="false" text="Submit" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="350.0" />
-      <TextField fx:id="playerOName" layoutX="222.0" layoutY="214.0" prefHeight="23.0" prefWidth="136.0" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="222.0" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="214.0" />
-      <Text layoutX="22.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert player 'O' name:" AnchorPane.bottomAnchor="42.7333984375" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="210.19970703125" AnchorPane.topAnchor="214.6552734375">
+      <Button fx:id="submit" layoutX="147.0" layoutY="227.0" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="106.0" text="Submit" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="147.0" AnchorPane.rightAnchor="147.0" AnchorPane.topAnchor="227.0" />
+      <TextField fx:id="playerOName" layoutX="222.0" layoutY="187.0" prefHeight="23.0" prefWidth="136.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="222.0" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="187.0" />
+      <Text layoutX="22.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert player 'O' name:" AnchorPane.bottomAnchor="69.7333984375" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="210.19970703125" AnchorPane.topAnchor="187.6552734375">
          <font>
             <Font size="17.0" />
          </font>
       </Text>
-      <TextField fx:id="playerXName" layoutX="222.0" layoutY="177.0" prefHeight="23.0" prefWidth="136.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="222.0" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="177.0" />
+      <TextField fx:id="playerXName" layoutX="222.0" layoutY="152.0" prefHeight="23.0" prefWidth="136.0" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="222.0" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="152.0" />
    </children>
 </AnchorPane>

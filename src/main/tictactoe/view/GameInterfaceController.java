@@ -254,8 +254,8 @@ public class GameInterfaceController implements Initializable {
             loader.setLocation(MainApp.class.getResource("view/Winner.fxml"));
             AnchorPane winner = loader.load();
             Stage dialogStage = new Stage();
-            //dialogStage.initModality(Modality.WINDOW_MODAL); //Possibility to not record stats
-            //dialogStage.initOwner(primaryStage);
+            dialogStage.initModality(Modality.APPLICATION_MODAL); //Possibility to not record stats
+            dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(winner);
             dialogStage.setScene(scene);
             dialogStage.show();

@@ -6,5 +6,4 @@ module TicTacToeCastlelar {
     exports main.tictactoe;
     opens main.tictactoe.view;
     opens main.tictactoe.model;
-
 }
