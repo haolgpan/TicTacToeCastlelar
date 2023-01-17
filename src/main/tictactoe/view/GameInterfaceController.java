@@ -82,6 +82,7 @@ public class GameInterfaceController implements Initializable {
             for(Button b : buttons) b.setDisable(false);
             if (humVscpu.isSelected()){
                 cpu1 = true;
+                cpu2 = false;
                 buttons.forEach(button -> {
                     setupButtonCpu(button);
                     button.setFocusTraversable(false);
