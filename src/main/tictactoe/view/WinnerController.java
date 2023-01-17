@@ -8,6 +8,11 @@ import javafx.scene.image.ImageView;
 import main.tictactoe.model.Person;
 import java.util.ArrayList;
 
+/**
+ *The controller for the winner layout. The winne layout provides the basic
+ * application layout containing a window and display it when a player wins
+ * or it's a draw.
+ */
 public class WinnerController {
 
     @FXML
@@ -25,12 +30,27 @@ public class WinnerController {
         return submit;
     }
 
+    /**
+     *Turns off the textfield for player O when human
+     * versus cpu is selected.
+     */
     public void turnOffTextO(){
         playerOName.setDisable(true);
     }
+
+    /**
+     *Display winner image when the winner stage is also displayed.
+     */
     public void showImage(){
         winner.setImage(new Image("file:resources/winner.jpg"));
     }
+
+    /**
+     * Method
+     * @param persons
+     * @param winner
+     * @param cpu
+     */
     public void addStats(ArrayList<Person> persons, String winner, boolean cpu){
         for (Person person : persons) {
             if (person.getName().equals(playerXName.getText())) {

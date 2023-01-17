@@ -22,6 +22,11 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Controller of the GameInterface layout. Provides the basic function
+ * from starting the game Tic Tac Toe to record statistics of different
+ * players and Cpu. Contains the mentioned methods and other JavaFX elements.
+ */
 public class GameInterfaceController implements Initializable {
     public Button stats;
     private final ArrayList<Person> persons = new ArrayList<>();
@@ -63,7 +68,11 @@ public class GameInterfaceController implements Initializable {
     private boolean cpu2 = false;
     private String combination = "";
 
-
+    /**
+     *
+     * Initilize the game by setting up all the buttons from the Grid pane and
+     * starts the game on a clicked button.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buttons = new ArrayList<>(Arrays.asList(b1,b2,b3,b4,b5,b6,b7,b8,b9));
@@ -104,10 +113,20 @@ public class GameInterfaceController implements Initializable {
             }
         });
     }
+
+    /**
+     *On clicked button, opens a new window and load the statistics FXML file
+     * and displays it on screen
+     */
     @FXML
     public void handleStats(){
         showStatistics();
     }
+
+    /**
+     *Reset all buttons of the Grid pane, set all text to empty,
+     * reboot all integer turns, and set all booleans by default.
+     */
     @FXML
     void restartGame() {
         buttons.forEach(this::resetButton);
@@ -116,10 +135,19 @@ public class GameInterfaceController implements Initializable {
         gameOver = false;
         overallTurn = 0;
     }
+
+    /**
+     *Set all buttons text to empty and set them to disable.
+     */
     public void resetButton(Button button){
         button.setDisable(false);
         button.setText("");
     }
+
+    /**
+     *On selected option, starts the game with cpu
+     * playing against cpu.
+     */
     public void setupButtonCpuvsCpu(){
         while(!gameOver && overallTurn <8) {
             cpuMoves2();
@@ -132,6 +160,11 @@ public class GameInterfaceController implements Initializable {
             checkIfGameIsOver();
         }
     }
+
+    /**
+     *On selected option, starts the game with  cpu
+     * versus human.
+     */
     private void setupButtonCpu(Button button) {
         button.setOnMouseClicked(mouseEvent -> {
             button.setText("X");
@@ -144,6 +177,10 @@ public class GameInterfaceController implements Initializable {
             if(!gameOver)checkIfGameIsOver();
         });
     }
+
+    /**
+     *Set the moves of the cpu1 with random movements.
+     */
     public void cpuMoves() {
         int move = randomMove();
         Button cpu = buttons.get(move);
@@ -159,6 +196,11 @@ public class GameInterfaceController implements Initializable {
         ++overallTurn;
         }
     }
+
+    /**
+     *Set the moves of the cpu2 with random movements, it's used
+     * specifically for cpu versus cpu gameplay.
+     */
     public void cpuMoves2() {
         int move = randomMove();
         Button cpu = buttons.get(move);
@@ -179,9 +221,19 @@ public class GameInterfaceController implements Initializable {
             ++overallTurn;
         }
     }
+
+    /**
+     *Method to genereate a random number of the list of buttons in the Grid pane.
+     * @return Integer
+     */
     public int randomMove(){
         return ThreadLocalRandom.current().nextInt(0,buttons.size());
     }
+
+    /**
+     *On selected option, starts the game into a human
+     * versus human gameplay.
+     */
     private void setupButton(Button button) {
         button.setOnMouseClicked(mouseEvent -> {
             setPlayerSymbol(button);
@@ -191,6 +243,11 @@ public class GameInterfaceController implements Initializable {
 
         });
     }
+
+    /**
+     *Set the text of a clicked button from the Grid pane,
+     * could be X or O.
+     */
     public void setPlayerSymbol(Button button){
         if(playerTurn % 2 == 0){
             button.setText("X");
@@ -200,6 +257,10 @@ public class GameInterfaceController implements Initializable {
             playerTurn = 0;
         }
     }
+
+    /**
+     *Method to check winners and draws.
+     */
     public void checkIfGameIsOver(){
         for (int a = 0; a < 8; a++) {
             String line = switch (a) {
@@ -241,6 +302,11 @@ public class GameInterfaceController implements Initializable {
             if(cpu1 && !cpu2 || !cpu1 && !cpu2)winnerInsert();
         }
     }
+
+    /**
+     *Load a window to record the statistics for
+     * the players after game over.
+     */
     public void winnerInsert() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -265,6 +331,10 @@ public class GameInterfaceController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     *Opens a window to show the statistics of the players, Cpu included.
+     */
     public void showStatistics(){
         try{
             FXMLLoader loader = new FXMLLoader();
@@ -287,6 +357,10 @@ public class GameInterfaceController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    /**
+     *Is called by the main application to give a reference back to itself.
+     */
     public void setMainApp() {
     }
 

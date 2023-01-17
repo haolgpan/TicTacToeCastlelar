@@ -14,11 +14,17 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     *
+     * @param primaryStage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -27,6 +33,10 @@ public class MainApp extends Application {
         initRootLayout();
         showGameInterface();
     }
+
+    /**
+     *Load RootLayout stage and display it from the FXML file
+     */
     public void initRootLayout() {
          // Load root layout from fxml file.
          FXMLLoader loader = new FXMLLoader();
@@ -47,6 +57,10 @@ public class MainApp extends Application {
          //controller.setMainApp(this);
          primaryStage.show();
     }
+
+    /**
+     *Load Game Interface layout and display it from a FXML file
+     */
     public void showGameInterface(){
         try {
             // Load tic tac toe.
