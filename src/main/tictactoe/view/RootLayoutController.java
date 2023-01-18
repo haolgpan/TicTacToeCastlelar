@@ -2,10 +2,11 @@ package main.tictactoe.view;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import main.tictactoe.MainApp;
+
+import java.util.Objects;
 
 /**
  * The controller for the root layout. The root layout provides the basic
@@ -37,13 +38,13 @@ public class RootLayoutController{
     @FXML
     private void handleThemeDark(){
         bp.getStylesheets().clear();
-        String cssDark = MainApp.class.getResource("view/DarkTheme.css").toExternalForm();
+        String cssDark = Objects.requireNonNull(MainApp.class.getResource("view/DarkTheme.css")).toExternalForm();
         bp.getStylesheets().add(cssDark);
     }
     @FXML
     private void handleThemeLight(){
         bp.getStylesheets().clear();
-        String cssLight = MainApp.class.getResource("view/Light.css").toExternalForm();
+        String cssLight = Objects.requireNonNull(MainApp.class.getResource("view/Light.css")).toExternalForm();
         bp.getStylesheets().add(cssLight);
     }
     @FXML
