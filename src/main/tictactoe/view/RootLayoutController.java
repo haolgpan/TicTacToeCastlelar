@@ -35,18 +35,28 @@ public class RootLayoutController{
         alert.setContentText("Author: Hao Pan\nPrototipe of the game Tic Tac Toe: \nhttps://github.com/haolgpan/TicTacToeCastlelar");
         alert.showAndWait();
     }
+
+    /**
+     * Change colour background to dark
+     */
     @FXML
     private void handleThemeDark(){
         bp.getStylesheets().clear();
         String cssDark = Objects.requireNonNull(MainApp.class.getResource("view/DarkTheme.css")).toExternalForm();
         bp.getStylesheets().add(cssDark);
     }
+    /**
+     * Change colour background to light
+     */
     @FXML
     private void handleThemeLight(){
         bp.getStylesheets().clear();
         String cssLight = Objects.requireNonNull(MainApp.class.getResource("view/Light.css")).toExternalForm();
         bp.getStylesheets().add(cssLight);
     }
+    /**
+     * Change colour background to default
+     */
     @FXML
     private void handleDefault(){
         bp.getStylesheets().clear();

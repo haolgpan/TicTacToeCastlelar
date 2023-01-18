@@ -8,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.tictactoe.view.GameInterfaceController;
-import main.tictactoe.view.RootLayoutController;
 
 import java.io.IOException;
 public class MainApp extends Application {

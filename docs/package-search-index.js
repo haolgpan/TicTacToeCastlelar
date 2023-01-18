@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"TicTacToeCastlelar","l":"main.tictactoe"},{"m":"TicTacToeCastlelar","l":"main.tictactoe.model"},{"m":"TicTacToeCastlelar","l":"main.tictactoe.view"}];updateSearchResults();
