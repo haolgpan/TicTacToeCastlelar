@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.tictactoe.view.GameInterfaceController;
+import main.tictactoe.view.RootLayoutController;
+
 import java.io.IOException;
 public class MainApp extends Application {
 
@@ -52,8 +54,6 @@ public class MainApp extends Application {
          primaryStage.setResizable(false);
 
          // Give the controller access to the main app.
-         //RootLayoutController controller = loader.getController();
-         //controller.setMainApp(this);
          primaryStage.show();
     }
 

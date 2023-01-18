@@ -2,14 +2,19 @@ package main.tictactoe.view;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.BorderPane;
+import main.tictactoe.MainApp;
 
 /**
  * The controller for the root layout. The root layout provides the basic
  * application layout containing a menu bar and space where other JavaFX
  * elements can be placed.
  */
-public class RootLayoutController {
+public class RootLayoutController{
+    @FXML
+    private BorderPane bp;
     /**
      *Close the aplication and all the opened windows.
      */
@@ -28,5 +33,21 @@ public class RootLayoutController {
         alert.setHeaderText("About");
         alert.setContentText("Author: Hao Pan\nPrototipe of the game Tic Tac Toe: \nhttps://github.com/haolgpan/TicTacToeCastlelar");
         alert.showAndWait();
+    }
+    @FXML
+    private void handleThemeDark(){
+        bp.getStylesheets().clear();
+        String cssDark = MainApp.class.getResource("view/DarkTheme.css").toExternalForm();
+        bp.getStylesheets().add(cssDark);
+    }
+    @FXML
+    private void handleThemeLight(){
+        bp.getStylesheets().clear();
+        String cssLight = MainApp.class.getResource("view/Light.css").toExternalForm();
+        bp.getStylesheets().add(cssLight);
+    }
+    @FXML
+    private void handleDefault(){
+        bp.getStylesheets().clear();
     }
 }

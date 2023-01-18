@@ -5,14 +5,17 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" styleClass="background" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.tictactoe.view.RootLayoutController">
+<BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.tictactoe.view.RootLayoutController">
    <top>
        <MenuBar BorderPane.alignment="CENTER">
            <Menu mnemonicParsing="false" text="File">
-               <MenuItem mnemonicParsing="false" onAction="#handleQuit" text="Close"/>
+               <MenuItem mnemonicParsing="false" onAction="#handleThemeDark" text="Change theme dark" />
+            <MenuItem mnemonicParsing="false" onAction="#handleThemeLight" text="Change theme light" />
+            <MenuItem mnemonicParsing="false" onAction="#handleDefault" text="Default theme" />
+            <MenuItem mnemonicParsing="false" onAction="#handleQuit" text="Close" />
            </Menu>
            <Menu mnemonicParsing="false" text="Help">
-               <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="About"/>
+               <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="About" />
            </Menu>
        </MenuBar>
    </top>
