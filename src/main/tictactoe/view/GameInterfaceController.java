@@ -284,7 +284,7 @@ public class GameInterfaceController implements Initializable {
                 if(cpu1 && !cpu2 || !cpu1 && !cpu2)winnerInsert();
             }
             //O winner
-            else if (line.equals("OOO")) {
+            else if (line.equals("OOO") && !gameOver) {
                 combination = line;
                 gameOver = true;
                 winnerText.setText("O won!");

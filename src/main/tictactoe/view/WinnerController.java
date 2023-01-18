@@ -81,7 +81,7 @@ public class WinnerController {
                         if (cpu) persons.get(0).setWin(persons.get(0).getWin() + 1);
                         else for (Person pO : persons)
                             if (pO.getName().equals(playerOName.getText()))
-                                pO.setWin(p.getWin() + 1);
+                                pO.setWin(pO.getWin() + 1);
                     }
                     break;
                 case "DRAW":
